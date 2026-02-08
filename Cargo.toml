@@ -1,0 +1,24 @@
+[package]
+name = "grep-app-cli"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0"
+clap = { version = "4", features = ["derive"] }
+crossterm = "0.29"
+rmcp = { version = "0.14", features = [
+    "client",
+    "reqwest",
+    "transport-streamable-http-client-reqwest",
+] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+syntect = { version = "5", default-features = false, features = [
+    "default-syntaxes",
+    "plist-load",
+    "parsing",
+    "regex-onig",
+] }
+terminal-light = "1.8"
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
