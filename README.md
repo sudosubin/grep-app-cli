@@ -19,7 +19,7 @@ grep-app-cli --json 'async function'
 ## Options
 
 | Flag | Description |
-|---|---|
+| --- | --- |
 | `--match-case` | Case sensitive search |
 | `--match-whole-words` | Match whole words only |
 | `--use-regexp` | Interpret query as a regular expression |
@@ -27,6 +27,14 @@ grep-app-cli --json 'async function'
 | `--path <PATH>` | Filter by file path |
 | `--language <LANG>` | Filter by language (repeatable) |
 | `--json` | Output raw JSON |
+
+## Use with AI Agents
+
+You can add and use the [`grep-app-cli`](./skills/grep-app-cli) skill.
+
+```sh
+npx skills add sudosubin/grep-app-cli
+```
 
 ## License
 
