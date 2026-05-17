@@ -13,3 +13,6 @@ installers = []
 publish-jobs = ["./publish-crate"]
 # Target platforms to build apps for (Rust target-triple syntax)
 targets = ["aarch64-apple-darwin", "aarch64-unknown-linux-gnu", "x86_64-apple-darwin", "x86_64-unknown-linux-gnu", "x86_64-pc-windows-msvc"]
+# Grant the nested publish-crate workflow the permissions it requests.
+# id-token: OIDC trusted publishing token. contents: actions/checkout.
+github-custom-job-permissions = { "publish-crate" = { id-token = "write", contents = "read" } }
