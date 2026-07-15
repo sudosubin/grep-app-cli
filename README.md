@@ -51,6 +51,18 @@ grep-app-cli --json 'async function'
 | `--language <LANG>` | Filter by language (repeatable) |
 | `--json` | Output raw JSON |
 
+## Shell Completions
+
+Generate static completions with `completion <shell>`.
+
+```sh
+grep-app-cli completion bash
+grep-app-cli completion elvish
+grep-app-cli completion fish
+grep-app-cli completion powershell
+grep-app-cli completion zsh
+```
+
 ## Use with AI Agents
 
 You can add and use the [`grep-app-cli`](./skills/grep-app-cli) skill.

@@ -1,4 +1,5 @@
-use clap::Parser;
+use clap::{CommandFactory, Parser, Subcommand, error::ErrorKind};
+use clap_complete::Shell;
 
 /// Search real-world code examples from over a million public GitHub repositories.
 #[derive(Parser, Debug)]
@@ -14,8 +15,11 @@ TIPS:
 "
 )]
 pub struct Cli {
+    #[command(subcommand)]
+    pub command: Option<Commands>,
+
     /// The literal code pattern to search for
-    pub query: String,
+    pub query: Option<String>,
 
     /// Case sensitive search
     #[arg(long)]
@@ -44,4 +48,26 @@ pub struct Cli {
     /// Output raw JSON response
     #[arg(long)]
     pub json: bool,
+}
+
+impl Cli {
+    pub fn search_query(&self) -> &str {
+        self.query.as_deref().unwrap_or_else(|| {
+            Self::command()
+                .error(
+                    ErrorKind::MissingRequiredArgument,
+                    "the following required argument was not provided: <QUERY>",
+                )
+                .exit()
+        })
+    }
+}
+
+#[derive(Subcommand, Debug)]
+pub enum Commands {
+    /// Generate shell completions
+    Completion {
+        /// Shell to generate for
+        shell: Shell,
+    },
 }

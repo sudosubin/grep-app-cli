@@ -39,7 +39,7 @@ impl<T: ServiceRole + 'static, S: rmcp::Service<T> + 'static> CancelHandle
     }
 }
 
-pub async fn search(cli: &Cli) -> Result<(String, Client)> {
+pub async fn search(query: &str, cli: &Cli) -> Result<(String, Client)> {
     let transport = StreamableHttpClientTransport::from_uri(MCP_ENDPOINT);
     let client_info = ClientInfo {
         meta: None,
@@ -63,7 +63,7 @@ pub async fn search(cli: &Cli) -> Result<(String, Client)> {
         .call_tool(CallToolRequestParams {
             meta: None,
             name: "searchGitHub".into(),
-            arguments: Some(build_arguments(cli)),
+            arguments: Some(build_arguments(query, cli)),
             task: None,
         })
         .await
@@ -82,9 +82,9 @@ pub async fn search(cli: &Cli) -> Result<(String, Client)> {
     Ok((text, Client(Box::new(Some(service)))))
 }
 
-fn build_arguments(cli: &Cli) -> serde_json::Map<String, Value> {
+fn build_arguments(query: &str, cli: &Cli) -> serde_json::Map<String, Value> {
     let mut args = serde_json::Map::new();
-    args.insert("query".into(), Value::String(cli.query.clone()));
+    args.insert("query".into(), Value::String(query.into()));
     args.insert("matchCase".into(), Value::Bool(cli.match_case));
     args.insert("matchWholeWords".into(), Value::Bool(cli.match_whole_words));
     args.insert("useRegexp".into(), Value::Bool(cli.use_regexp));

@@ -9,6 +9,7 @@ repository = "https://github.com/sudosubin/grep-app-cli"
 [dependencies]
 anyhow = "1.0"
 clap = { version = "4", features = ["derive"] }
+clap_complete = "4"
 crossterm = "0.29"
 rmcp = { version = "0.14", features = [
     "client",
