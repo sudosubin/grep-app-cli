@@ -6,10 +6,13 @@ use rmcp::{
     transport::StreamableHttpClientTransport,
 };
 use serde_json::Value;
+use std::time::Duration;
 
 use crate::cli::Cli;
 
 const MCP_ENDPOINT: &str = "https://mcp.grep.app";
+const MAX_ATTEMPTS: u32 = 3;
+const RETRY_BASE_DELAY: Duration = Duration::from_millis(250);
 
 /// Connected MCP client handle. Must be cancelled when done.
 pub struct Client(Box<dyn CancelHandle>);
@@ -59,15 +62,22 @@ pub async fn search(query: &str, cli: &Cli) -> Result<(String, Client)> {
         .await
         .context("Failed to connect to mcp.grep.app")?;
 
-    let result = service
-        .call_tool(CallToolRequestParams {
-            meta: None,
-            name: "searchGitHub".into(),
-            arguments: Some(build_arguments(query, cli)),
-            task: None,
-        })
-        .await
-        .context("Failed to call searchGitHub tool")?;
+    let request = || CallToolRequestParams {
+        meta: None,
+        name: "searchGitHub".into(),
+        arguments: Some(build_arguments(query, cli)),
+        task: None,
+    };
+
+    let mut result = service.call_tool(request()).await;
+    for attempt in 1..MAX_ATTEMPTS {
+        if result.is_ok() {
+            break;
+        }
+        tokio::time::sleep(RETRY_BASE_DELAY * attempt).await;
+        result = service.call_tool(request()).await;
+    }
+    let result = result.context("Failed to call searchGitHub tool")?;
 
     let text = result
         .content
