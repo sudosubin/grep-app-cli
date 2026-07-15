@@ -25,7 +25,7 @@ syntect = { version = "5", default-features = false, features = [
     "regex-onig",
 ] }
 terminal-light = "1.8"
-tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "time"] }
 
 [profile.release]
 opt-level = "z"
