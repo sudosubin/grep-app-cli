@@ -2,7 +2,7 @@
 name = "grep-app-cli"
 version = "0.1.4"
 edition = "2024"
-description = "CLI for grep.app — search code across 1M+ public GitHub repos"
+description = "CLI for grep.app: search code across 1M+ public GitHub repos"
 license = "MIT"
 repository = "https://github.com/sudosubin/grep-app-cli"
 
