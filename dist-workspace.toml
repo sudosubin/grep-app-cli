@@ -1,18 +1,36 @@
 [workspace]
 members = ["cargo:."]
 
-# Config for 'dist'
 [dist]
-# The preferred dist version to use in CI (Cargo.toml SemVer syntax)
 cargo-dist-version = "0.30.3"
-# CI backends to support
 ci = "github"
-# The installers to generate for each app
-installers = []
-# Publish to crates.io on release
+installers = ["shell", "powershell"]
+unix-archive = ".tar.gz"
+install-path = "~/.local/bin"
+github-attestations = true
+github-attestations-phase = "host"
 publish-jobs = ["./publish-crate"]
-# Target platforms to build apps for (Rust target-triple syntax)
-targets = ["aarch64-apple-darwin", "aarch64-unknown-linux-gnu", "x86_64-apple-darwin", "x86_64-unknown-linux-gnu", "x86_64-pc-windows-msvc"]
-# Grant the nested publish-crate workflow the permissions it requests.
-# id-token: OIDC trusted publishing token. contents: actions/checkout.
+targets = [
+  "aarch64-apple-darwin",
+  "x86_64-apple-darwin",
+  "aarch64-unknown-linux-gnu",
+  "x86_64-unknown-linux-gnu",
+  "aarch64-pc-windows-msvc",
+  "x86_64-pc-windows-msvc",
+]
 github-custom-job-permissions = { "publish-crate" = { id-token = "write", contents = "read" } }
+
+[dist.github-custom-runners]
+global = "ubuntu-24.04"
+aarch64-apple-darwin = "macos-latest"
+x86_64-apple-darwin = "macos-15-intel"
+aarch64-pc-windows-msvc = "windows-11-arm"
+x86_64-pc-windows-msvc = "windows-latest"
+
+[dist.github-custom-runners.aarch64-unknown-linux-gnu]
+runner = "ubuntu-24.04-arm"
+container = { image = "buildpack-deps:22.04", host = "aarch64-unknown-linux-gnu", package_manager = "apt" }
+
+[dist.github-custom-runners.x86_64-unknown-linux-gnu]
+runner = "ubuntu-24.04"
+container = { image = "buildpack-deps:22.04", host = "x86_64-unknown-linux-gnu", package_manager = "apt" }

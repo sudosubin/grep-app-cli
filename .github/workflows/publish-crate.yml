@@ -9,17 +9,21 @@ on:
 
 jobs:
   publish-crate:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       id-token: write
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
+
       - uses: dtolnay/rust-toolchain@stable
+
       - id: auth
         uses: rust-lang/crates-io-auth-action@v1
-      - run: cargo publish
+
+      - name: Publish crate
+        run: cargo publish --locked --no-verify
         env:
           CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
