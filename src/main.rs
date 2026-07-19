@@ -20,10 +20,10 @@ async fn main() -> Result<()> {
             env!("CARGO_BIN_NAME"),
             &mut completions,
         );
-        if let Err(err) = std::io::stdout().write_all(&completions) {
-            if err.kind() != IoErrorKind::BrokenPipe {
-                return Err(err.into());
-            }
+        if let Err(err) = std::io::stdout().write_all(&completions)
+            && err.kind() != IoErrorKind::BrokenPipe
+        {
+            return Err(err.into());
         }
         return Ok(());
     }

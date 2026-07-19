@@ -43,6 +43,12 @@ sh grep-app-cli-installer.sh
 
 Set `GREP_APP_CLI_INSTALL_DIR` to change the install location.
 
+Or install with Homebrew:
+
+```sh
+brew install sudosubin/tap/grep-app-cli
+```
+
 Or install with Cargo:
 
 ```sh
