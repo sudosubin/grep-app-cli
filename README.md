@@ -81,20 +81,6 @@ grep-app-cli --json 'async function'
 | `--language <LANG>` | Filter by language (repeatable) |
 | `--json` | Output raw JSON |
 
-## TLS Certificates
-
-The HTTP client trusts bundled public CAs and the system certificate store by default.
-To load a custom PEM CA bundle or certificate directory instead of the system store, set
-`SSL_CERT_FILE` or `SSL_CERT_DIR`:
-
-```sh
-SSL_CERT_FILE=/path/to/company-ca-bundle.pem grep-app-cli 'useState('
-SSL_CERT_DIR=/path/to/certs grep-app-cli 'useState('
-```
-
-Bundled public CAs remain trusted, and TLS certificate verification stays enabled.
-`CURL_CA_BUNDLE`, `REQUESTS_CA_BUNDLE`, and `NODE_EXTRA_CA_CERTS` are not supported.
-
 ## Shell Completions
 
 Generate static completions with `completion <shell>`.
