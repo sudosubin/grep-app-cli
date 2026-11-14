@@ -11,6 +11,9 @@ anyhow = "1.0"
 clap = { version = "4", features = ["derive"] }
 clap_complete = "4"
 crossterm = "0.29"
+reqwest = { version = "0.12", default-features = false, features = [
+    "rustls-tls-native-roots",
+] }
 rmcp = { version = "0.14", features = [
     "client",
     "reqwest",
